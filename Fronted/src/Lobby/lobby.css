@@ -1,0 +1,62 @@
+table {
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    margin: 65px auto;
+    width: 40%;
+    }
+
+  th,
+  td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+  }
+
+  th {
+  background-color: #ccc;
+  }
+
+  td {
+  font-size: 24px;
+  }
+
+  tr:nth-child(even) {
+  background-color: #f2f2f2;
+  }
+  button {
+    position: absolute;
+    top: 550px;
+    color: white;
+    padding: 14px 20px;
+    margin: 0px 0;
+    border: none;
+    cursor: pointer;
+    width: 10%;
+  }
+  .jugar{
+    left: 910px;
+    background-color: blue;
+  }
+  .bingo {
+    left: 690px;
+    background-color: green ;
+  }
+  .cancelar {
+    left: 470px;
+    background-color: orangered  ;
+  }
+.balotas-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.balota {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+.balota td {
+  border: 1px solid black;
+}
