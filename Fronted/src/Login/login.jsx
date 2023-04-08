@@ -13,7 +13,7 @@ const Login = () => {
         target: { usuario, contraseña },
       } = e;
 
-      const data = await fetch("http://localhost:9090/inicio", {
+      const res = await fetch("http://localhost:9090/inicio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,14 +24,17 @@ const Login = () => {
         }),
       })
 
-      if (!data.ok) {
+      if (!res.ok) {
         return alert("Error al iniciar sesion")
       }
 
+      const data = await res.json()
+      const { id_jugador } = data.data
+
       // window.location.href = 'h/lobby'
-      alert("Bienvenido al Bingo El Gran Buda")
+      // alert("Bienvenido al Bingo El Gran Buda")
       setLogueado(true)
-      Navigate(`lobby/${id_jugador.value}/jugar/${usuario.value}}`)
+      Navigate(`lobby/${id_jugador}/${usuario.value}/carton`)
     }
 
     return (

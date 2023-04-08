@@ -5,6 +5,32 @@ require('dotenv').config();
 const router = require('./routes/routes');
 const port = 9090
 const cors = require('cors');
+const sockets = require('./sockets');
+
+// Sockets
+const http = require('http')
+const server = http.createServer(app);
+
+
+// const socket = new sockets()
+// socket.configureSockets(server)
+// socket.io.listen(6565)
+
+// socket.on()
+
+const { Server } = require("socket.io");
+
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log(`User connected: ${socket.id}`);
+})
+
+
 
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));

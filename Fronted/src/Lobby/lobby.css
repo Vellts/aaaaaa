@@ -1,62 +1,112 @@
-table {
-    margin-bottom: 50px;
-    margin-left: auto;
-    margin-right: auto;
-    border-collapse: collapse;
-    margin: 65px auto;
-    width: 40%;
-    }
+.loby{
+  color: white;
+  text-align: center;
+}
 
-  th,
-  td {
+.usuario{
+  color: yellow;
+  margin-right: 40px;
+}
+  th,td {
   border: 1px solid black;
   padding: 10px;
   text-align: center;
   }
-
   th {
   background-color: #ccc;
   }
-
   td {
   font-size: 24px;
   }
-
-  tr:nth-child(even) {
+  tr {
   background-color: #f2f2f2;
   }
-  button {
+.carton{
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    margin: 30px auto;
+    width: 50%;
+}
+.jugar{
+    top: 640px;
     position: absolute;
-    top: 550px;
-    color: white;
+    left: 920px;
+    background-color: blue;
     padding: 14px 20px;
     margin: 0px 0;
     border: none;
     cursor: pointer;
-    width: 10%;
+    width: 20%;
+    border-radius: 0.45rem;
   }
-  .jugar{
-    left: 910px;
-    background-color: blue;
-  }
-  .bingo {
-    left: 690px;
+.bingo {
+    top: 640px;
+    position: absolute;
+    left: 610px;
     background-color: green ;
+    padding: 14px 20px;
+    margin: 0px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 0.45rem;
   }
-  .cancelar {
-    left: 470px;
+.cancelar {
+    top: 640px;
+    position: absolute;
+    left: 300px;
     background-color: orangered  ;
+    padding: 14px 20px;
+    margin: 0px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 0.45rem;
   }
-.balotas-container {
-  display: flex;
-  flex-wrap: wrap;
-}
+  .label{
+    color: orangered;
 
-.balota {
-  margin-right: 10px;
-  margin-bottom: 10px;
-  word-break: break-all;
+  }
+.hidden {
+    background-color: transparent;
+    border: none;
+  }
+  .balota-t{
+    color: white;
+  }
+.balotas{
+    display: block;
+    max-width: 800px;
+    overflow-x: auto;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    margin: 30px auto;
+    width: 50%;
 }
-.balota td {
-  border: 1px solid black;
+.nueva-balota {
+  background-color: #ffcc00;
+}
+.cerrar{
+  top: 30px;
+  background-color: red  ;
+  padding: 14px 20px;
+  border: none;
+  cursor: pointer;
+  width: 8%;
+  border-radius: 0.45rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.claseSeleccionable{
+  background-color: green;
+}
+.carton-salio {
+  background-color: red;
+  color: #A9A9A9;
+  text-decoration: line-through;
 }

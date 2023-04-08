@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef} from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
+const socket = io("http://localhost:6565");
 
 import "./lobby.css";
 
@@ -21,37 +22,37 @@ const Navigate = useNavigate();
 const index = useRef(0)
 
 const verificarGanador = (columnas) => {
-  let contador = 0
-  for (let i = 0; i < columnas.length; i++) {
-      for (let j = 0; j < columnas[i].length; j++) {
-          // console.log(columnas[i][j])
-          tablero.forEach((balota) => {
-              if(Number(columnas[i][j]) === balota) {
-                  contador += 1
-              }
+    let contador = 0
+    for (let i = 0; i < columnas.length; i++) {
+        for (let j = 0; j < columnas[i].length; j++) {
+            // console.log(columnas[i][j])
+            tablero.forEach((balota) => {
+                if(Number(columnas[i][j]) === balota) {
+                    contador += 1
+                }
 
-              if (contador >= 5){
-                  socket.emit('ganador', {id_jugador, usuario})
-                  // return Navigate(`/lobby/${id_jugador}/${usuario}/ganador`)
-              }
-          })
-      }
-  }
+                if (contador >= 5){
+                    socket.emit('ganador', {id_jugador, usuario})
+                    // return Navigate(`/lobby/${id_jugador}/${usuario}/ganador`)
+                }
+            })
+        }
+    }
 }
 
 const verificarBalota = (columnas, balotaActual) => {
-  for (let i = 0; i < columnas.length; i++) {
-      for (let j = 0; j < columnas[i].length; j++) {
-          if (Number(columnas[i][j]) === balotaActual) {
-              setTablero([...tablero, balotaActual])
-              return verificarGanador(columnas)
-          }
-      }
-  }
+    for (let i = 0; i < columnas.length; i++) {
+        for (let j = 0; j < columnas[i].length; j++) {
+            if (Number(columnas[i][j]) === balotaActual) {
+                setTablero([...tablero, balotaActual])
+                return verificarGanador(columnas)
+            }
+        }
+    }
 }
 
 const getData = () => {
-  setTimeout(async () => {
+    setTimeout(async () => {
 
         const resposne = await fetch(`http://localhost:9090/inicio/${id_jugador}/${usuario}/carton`)
         const { data } = await resposne.json()
@@ -59,78 +60,38 @@ const getData = () => {
         
         setBalotas(data.balotas);
         setColumnas(data.columnas);
-        // console.log(data.balotas.at(index))
         setBalotaActual(data.balotas.at(index.current -1))
         verificarBalota(data.columnas, data.balotas.at(index.current-1))
         index.current -= 1
         // console.log(index)
         // setEstado(data.estado);
         // setidJuego(data.id_jugador);
-}, 1000)
-}
+    }, 1000)
     // index += 1
 
+}
+
 useEffect(() => {
-
-    getData();
-    return () => {
-      clearTimeout(getData)
+    const callApi = async () => {
+        const res = await fetch(`http://localhost:9090/inicio/${id_jugador}/${usuario}/carton`)
+        
+        if (!res.ok) {
+            alert("Error al obtener los datos")
+        }
     }
-// }, [socket])
-}, [balotas])
 
-// useInterval(() => {
-//   const obtenerDatos = async () => {
-//     const response = await fetch(`http://localhost:9090/inicio/${id_jugador}/${usuario}/carton`);
-//     const data = await response.json();
-//     setBalotas(data.data.balotas);
-//     setColumnas(data.data.columnas);
-//     setEstado(data.data.estado);
-//     setidJuego(data.data.id_juego);
-//   };
-//   obtenerDatos();
-// }, 5000);
-// const manejarJugar = () => {
-//   setCancelarHabilitado(true);
-// };
+    callApi()
 
-// const guardarInfo = async () => {
-//   try {
-//     const response = await fetch(`http://localhost:9090/inicio/${id_jugador}/jugar`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         id_jugador
-//       }),
-//     })
-//     if (!response.ok) {
-//       throw new Error("No se ha podido unir a la partida")
-//     }
-//     alert("Se ha unido a la partida")
-//   } catch (error) {
-//     alert(error.message)
-//   }
-// }
+    // socket.on()
+}, [socket])
+// }, [balotas, estado, id_juego, socket])
 
-// const eliminarInfo = async ()=>{
-//   const response = await fetch(`http://localhost:9090/inicio/${id_jugador}/info/eliminar`, {
-//   method: "DELETE",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({
-//     id_jugador
-//   }),
-// })
-// console.log(response);
-// if (!response.ok) {
-//   return alert("No se ha podido eliminar la partida");
+const comenzar = (e) => {
+    e.preventDefault();
+    console.log("comenzar")
+    socket.emit('comenzar', {id_jugador, usuario})
+}
 
-// }
-// return alert("Ha salido de  la partida")
-// }
 
 return (
       <div>
@@ -177,11 +138,12 @@ return (
             </tbody>
           </table>
 
-          <form className="hidden">
+        <button onClick={comenzar} className="jugar" type="submit">Jugar!</button>
+          {/* <form className="hidden">
             <input type="hidden" name="id_usuario" value={id_jugador} />
             <input type="hidden" name="usuario" value={usuario} />
             <button className="jugar" type="submit"  disabled={estado !== 'en espera' || cancelarHabilitado} 
-            onClick={(event)=>{event.preventDefault();guardarInfo();manejarJugar()}}  >
+            onClick={comenzar}  >
               Jugar!
             </button>
           </form>
@@ -200,7 +162,7 @@ return (
           </form>
             <button className="cerrar" type="submit" onClick={() => Navigate("/")}  >
               Cerrar Sesion
-            </button>
+            </button> */}
       </div>
 );
 };
